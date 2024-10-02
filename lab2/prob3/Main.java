@@ -1,8 +1,8 @@
 package lab2.prob3;
 
 
-import lab2.prob3.Phone.CellPhone;
-import lab2.prob3.Phone.SimCard;
+import lab2.prob3.phone.CellPhone;
+import lab2.prob3.phone.SimCard;
 
 class Main {
     public static void main(String[] args) {

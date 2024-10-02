@@ -1,4 +1,4 @@
-package lab2.prob3.Phone;
+package lab2.prob3.phone;
 
 public class CellPhone {
     private String mark;
