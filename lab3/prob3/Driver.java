@@ -1,9 +1,9 @@
 package lab3.prob3;
 
-import MPP.lab3.prob3.Address;
-import MPP.lab3.prob3.Condo;
-import MPP.lab3.prob3.House;
-import MPP.lab3.prob3.Trailer;
+import lab3.prob3.Address;
+import lab3.prob3.Condo;
+import lab3.prob3.House;
+import lab3.prob3.Trailer;
 
 public class Driver {
 
