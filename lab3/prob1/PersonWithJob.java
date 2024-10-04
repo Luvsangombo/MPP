@@ -25,7 +25,6 @@ public class PersonWithJob {
 		Person p2 = new Person("Joe");
 		PersonWithJob p1 = new PersonWithJob(3000.0, p2);
 
-		//As PersonsWithJobs, p1 should be equal to p2
 		System.out.println("p1.equals(p2)? " + p1.equals(p2));
 		System.out.println("p2.equals(p1)? " + p2.equals(p1));
 	}

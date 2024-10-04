@@ -1,7 +1,10 @@
+package lab2.prob2;
+
 import java.time.LocalDate;
 
-import prob2B.*;
-import prob2C.*;
+import lab2.prob2.prob2C.*;
+import lab2.prob2.prob2B.*;
+
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package prob2C;
+package lab2.prob2.prob2C;
 
 public class GradeReport {
     private String grade;
