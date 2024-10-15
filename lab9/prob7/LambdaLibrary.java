@@ -1,15 +1,20 @@
+package lesson9.lab9.prob7;
+
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class LambdaLibrary {
+@FunctionalInterface
+interface TriFunction<S, U, R, T> {
+    T apply(S s, U u, R r);
+}
 
-    // BiFunction for the stream pipeline
-    public static final BiFunction<List<Employee>, Integer, String> EMPLOYEES_FILTER = (list, salaryLimit) -> list
-            .stream()
-            .filter(emp -> emp.getSalary() > salaryLimit)
-            .filter(emp -> emp.getLastName().charAt(0) >= 'N')
-            .map(emp -> emp.getFirstName() + " " + emp.getLastName())
-            .sorted()
-            .collect(Collectors.joining(", "));
+public class LambdaLibrary {
+    public static final TriFunction<List<Employee>, Integer, Character, String> FILTER = (list, salary, c) -> {
+                return list.stream().filter(x -> x.getSalary() > salary)
+                        .filter(x -> x.getLastName().charAt(0) >= c)
+                        .map(x-> x.getFirstName() + " " + x.getLastName())
+                        .sorted()
+                        .collect(Collectors.joining(", "));
+            };
 }
