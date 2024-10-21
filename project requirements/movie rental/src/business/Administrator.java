@@ -1,6 +1,9 @@
 package business;
 
-public class Administrator {
+import java.io.Serializable;
+
+public class Administrator implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String firstName;
     private String lastName;
     private int phone;
@@ -24,4 +27,8 @@ public class Administrator {
     }
 
     // Getters and Setters
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
 }

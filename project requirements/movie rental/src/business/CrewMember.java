@@ -1,6 +1,9 @@
 package business;
 
-public class CrewMember {
+import java.io.Serializable;
+
+public class CrewMember implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String firstName;
     private String lastName;
     private String bio;
@@ -12,4 +15,15 @@ public class CrewMember {
     }
 
     // Getters and Setters
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public String getBio() {
+        return this.bio;
+    }
 }
