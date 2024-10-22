@@ -62,6 +62,7 @@ public class Movie {
         bframe.setBounds(100, 100, 800, 700);
         bframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bframe.getContentPane().setLayout(null);
+        bframe.setResizable(false);
 
         JPanel panel = new JPanel();
         panel.setBackground(new Color(233, 150, 122));
@@ -146,6 +147,7 @@ public class Movie {
         panel.add(scrollPane);
 
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -264,9 +266,9 @@ public class Movie {
         btnback.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 bframe.setVisible(false);
-//                MainWindow mWindow = new MainWindow();
-//
-//                mWindow.mframe.setVisible(true);
+                MainWindow mWindow = new MainWindow();
+
+                mWindow.mframe.setVisible(true);
             }
         });
         btnback.setBounds(510, 107, 117, 29);

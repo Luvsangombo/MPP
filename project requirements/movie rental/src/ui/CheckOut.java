@@ -88,6 +88,7 @@ public class CheckOut {
         panel.add(scrollPaneCheckout);
 
         tableCheckout = new JTable();
+        tableCheckout.setDefaultEditor(Object.class, null);
         tableCheckout.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -112,6 +113,7 @@ public class CheckOut {
         panel.add(scrollPaneMovie);
 
         tableMovie = new JTable();
+        tableMovie.setDefaultEditor(Object.class, null);
         tableMovie.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
