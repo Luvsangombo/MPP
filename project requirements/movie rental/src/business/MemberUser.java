@@ -7,11 +7,11 @@ public class MemberUser implements Serializable {
     private int id;
     private String firstName;
     private String lastName;
-    private int phone;
+    private String phone;
     private String address;
     private Administrator createdBy;
 
-    public MemberUser(int id, String firstName, String lastName, int phone, String address, Administrator createdBy) {
+    public MemberUser(int id, String firstName, String lastName, String phone, String address, Administrator createdBy) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,11 +29,11 @@ public class MemberUser implements Serializable {
     }
 
     // Getters and Setters
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
