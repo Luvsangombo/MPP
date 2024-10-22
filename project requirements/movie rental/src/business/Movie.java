@@ -93,4 +93,11 @@ public class Movie implements Serializable {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s , %s , %s , %s , %s , %s , %s", this.getTitle(), this.getGenre(), this.getFormat(),
+                this.getPrice(),
+                this.getQuantity(), this.getActors(), this.getDirector(), this.getAuthor());
+    }
 }
