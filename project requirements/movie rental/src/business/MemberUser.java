@@ -25,7 +25,7 @@ public class MemberUser implements Serializable {
     }
 
     public String getFullName() {
-        return this.firstName + "" + this.lastName;
+        return this.firstName + " " + this.lastName;
     }
 
     // Getters and Setters

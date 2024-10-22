@@ -1,5 +1,8 @@
 package ui;
 
+import business.MemberUser;
+import dataaccess.FileStorageUtil;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -21,7 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CheckOut {
-
+    private String memberId = null;
     JFrame bframe;
     DefaultTableModel modelCheckout;
     DefaultTableModel modelMovie;
@@ -54,6 +57,11 @@ public class CheckOut {
      * Create the application.
      */
     public CheckOut() {
+        initialize();
+    }
+
+    public CheckOut(String memberId) {
+        this.memberId = memberId;
         initialize();
     }
 
@@ -107,6 +115,15 @@ public class CheckOut {
         tableCheckout.setModel(modelCheckout);
         scrollPaneCheckout.setViewportView(tableCheckout);
 
+        if (memberId != null) {
+            MemberUser retrievedUser = (MemberUser) FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
+            System.out.println("Retrieved MemberUser: " + retrievedUser);
+
+            JLabel memberNameLabel = new JLabel(retrievedUser.getFullName());
+            memberNameLabel.setBounds(500, 20, 150, 16);
+            panel.add(memberNameLabel);
+        }
+
         // Movie Table
         scrollPaneMovie = new JScrollPane();
         scrollPaneMovie.setBounds(6, 390, 782, 267);
@@ -157,5 +174,17 @@ public class CheckOut {
         });
         btndel.setBounds(156, 15, 117, 29);
         panel.add(btndel);
+
+        JButton btnback = new JButton("Back");
+        btnback.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                bframe.setVisible(false);
+                Member mWindow = new Member();
+
+                mWindow.bframe.setVisible(true);
+            }
+        });
+        btnback.setBounds(306, 15, 117, 29);
+        panel.add(btnback);
     }
 }

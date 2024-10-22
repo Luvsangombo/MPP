@@ -269,6 +269,23 @@ public class Member {
         btnback.setBounds(510, 107, 117, 29);
         panel.add(btnback);
 
+        JButton btnCheckout = new JButton("Checkout");
+        btnCheckout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int r = table.getSelectedRow();
+                if(r>=0) {
+                    String id = model.getValueAt(r, 0).toString();
 
+                    bframe.setVisible(false);
+                    CheckOut checkoutWindow = new CheckOut(id);
+                    checkoutWindow.bframe.setVisible(true);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Please select a row");
+                }
+            }
+        });
+        btnCheckout.setBounds(510, 137, 117, 29);
+        panel.add(btnCheckout);
     }
 }
