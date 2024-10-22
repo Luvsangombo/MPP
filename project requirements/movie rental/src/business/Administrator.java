@@ -31,4 +31,32 @@ public class Administrator implements Serializable {
         return this.firstName + " " + this.lastName;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s , %s , %s", this.getFirstName(), this.getLastName(), this.getPhone());
+    }
 }

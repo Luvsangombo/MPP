@@ -60,4 +60,26 @@ public class MemberUser implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s , %s , %s , %s", this.getFirstName(), this.getLastName(), this.getPhone(),
+                this.getAddress());
+    }
 }

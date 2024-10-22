@@ -1,14 +1,25 @@
 package dataaccess;
 
 import java.io.*;
-import java.util.List;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class FileStorageUtil {
 
-    // Enum for StorageType
     public enum StorageType {
         ACTOR,
         ADMINISTRATORS,
@@ -20,54 +31,55 @@ public class FileStorageUtil {
         MOVIES,
     }
 
-    // For Windows users
-    // public static final String OUTPUT_DIR = System.getProperty("user.dir") +
-    // "\\src\\dataaccess\\storage";
-
-    // For Mac/Linux users
     public static final String OUTPUT_DIR = System.getProperty("user.dir") + "/src/dataaccess/storage";
 
-    // Save an object to a file based on StorageType
-    public static void saveObject(Object obj, StorageType type) {
+    public static <T> void saveMap(HashMap<String, T> map, StorageType type) {
         Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
         try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(path))) {
-            out.writeObject(obj);
+            out.writeObject(map);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // Load an object from a file based on StorageType
-    public static Object loadObject(StorageType type) {
-        Object obj = null;
+    @SuppressWarnings("unchecked")
+    public static <T> HashMap<String, T> loadMap(StorageType type) {
+        HashMap<String, T> map = new HashMap<>();
         Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
-        try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
-            obj = in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        if (Files.exists(path)) {
+            try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
+                map = (HashMap<String, T>) in.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
-        return obj;
+        return map;
     }
 
-    // Save a list of objects based on StorageType
-    public static void saveObjectList(List<?> list, StorageType type) {
-        Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
-        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(path))) {
-            out.writeObject(list);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static <T> void saveObject(String key, T obj, StorageType type) {
+        HashMap<String, T> map = loadMap(type);
+        map.put(key, obj);
+        saveMap(map, type);
     }
 
-    // Load a list of objects based on StorageType
-    public static List<?> loadObjectList(StorageType type) {
-        List<?> list = null;
-        Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
-        try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
-            list = (List<?>) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return list;
+    public static <T> T getObject(String key, StorageType type) {
+        HashMap<String, T> map = loadMap(type);
+        return map.get(key);
+    }
+
+    public static <T> void deleteObject(String key, StorageType type) {
+        HashMap<String, T> map = loadMap(type);
+        map.remove(key);
+        saveMap(map, type);
+    }
+
+    public static <T> boolean exists(String key, StorageType type) {
+        HashMap<String, T> map = loadMap(type);
+        return map.containsKey(key);
+    }
+
+    public static <T> List<T> listAllObjects(StorageType type) {
+        HashMap<String, T> map = loadMap(type);
+        return new ArrayList<>(map.values());
     }
 }

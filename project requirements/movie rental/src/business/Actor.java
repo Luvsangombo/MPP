@@ -13,4 +13,9 @@ public class Actor extends CrewMember implements Serializable {
         return this.getFirstName() + "" + this.getLastName();
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s , %s , %s", this.getFirstName(), this.getLastName(), this.getBio());
+    }
+
 }

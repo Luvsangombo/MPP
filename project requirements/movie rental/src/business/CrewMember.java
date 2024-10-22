@@ -15,6 +15,19 @@ public class CrewMember implements Serializable {
     }
 
     // Getters and Setters
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     public String getFirstName() {
         return this.firstName;
     }
