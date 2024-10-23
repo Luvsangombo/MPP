@@ -86,6 +86,12 @@ public class FileStorageUtil {
         return new ArrayList<>(map.values());
     }
 
+
+    public static <T> String getId(StorageType type) {
+        HashMap<String, T> map = loadMap(type);
+        return String.valueOf(map.size());
+    }
+
     // New method to search movies by title
     public static List<Movie> searchMovieByTitle(String title) {
         HashMap<String, Movie> movieMap = loadMap(StorageType.MOVIES);

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Movie implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String id;
     private String title;
     private String format;
     private String genre;
@@ -16,8 +17,9 @@ public class Movie implements Serializable {
     private boolean availability;
 
 
-    public Movie(String title, String format, String genre, List<Actor> actors, Director director,
+    public Movie(String id, String title, String format, String genre, List<Actor> actors, Director director,
             int quantity, double price) {
+        this.id = id;
         this.title = title;
         this.format = format;
         this.genre = genre;
@@ -31,15 +33,16 @@ public class Movie implements Serializable {
 
 
     public String[] asList(){
-        String[] row = new String[8];
-            row[0] = this.getTitle();
-            row[1] = this.getFormat();
-            row[2] = this.getGenre();
-            row[3] = String.valueOf(this.getPrice());
-            row[4] = String.valueOf(this.getQuantity());
-            row[5] = String.valueOf(this.isAvailable());
-            row[6] = String.valueOf(this.getActors());
-            row[7] = this.getDirector().toString();
+        String[] row = new String[9];
+            row[0] = String.valueOf(id);
+            row[1] = this.getTitle();
+            row[2] = this.getFormat();
+            row[3] = this.getGenre();
+            row[4] = String.valueOf(this.getPrice());
+            row[5] = String.valueOf(this.getQuantity());
+            row[6] = String.valueOf(this.isAvailable());
+            row[7] = String.valueOf(this.getActors());
+            row[8] = this.getDirector().toString();
         return row;
     }
 

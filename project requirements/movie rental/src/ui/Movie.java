@@ -27,9 +27,9 @@ public class Movie {
     private JTextField genretf;
     private JTextField pricetf;
     private JTextField quantitytf;
-    private JCheckBox availablitycb;
     private JTextField actorstf;
     private JTextField directorstf;
+    private JTextField availablitycb;
     private JTable table;
     private JScrollPane scrollPane;
 
@@ -54,7 +54,7 @@ public class Movie {
 
     private Object[][] getMovies(){
         List<business.Movie> movies = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.MOVIES);
-        Object[][] list = new Object[movies.size()][8];
+        Object[][] list = new Object[movies.size()][9];
             for(int i = 0; i < movies.size(); i++){
                     list[i] = movies.get(i).asList();
             }
@@ -78,6 +78,7 @@ public class Movie {
         bframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         bframe.getContentPane().setLayout(null);
         bframe.setResizable(false);
+
 
         JPanel panel = new JPanel();
         panel.setBackground(new Color(233, 150, 122));
@@ -104,10 +105,6 @@ public class Movie {
         JLabel QuantityLabel = new JLabel("Quantity");
         QuantityLabel.setBounds(6, 167, 120, 16);
         panel.add(QuantityLabel);
-
-        JLabel AvailabilityLabel = new JLabel("Availability");
-        AvailabilityLabel.setBounds(6, 207, 120, 16);
-        panel.add(AvailabilityLabel);
 
         JLabel ActorsLabel = new JLabel("Actors");
         ActorsLabel.setBounds(6, 247, 120, 16);
@@ -142,10 +139,6 @@ public class Movie {
         panel.add(quantitytf);
         quantitytf.setColumns(10);
 
-        availablitycb = new JCheckBox();
-        availablitycb.setBounds(129, 207, 160, 26);
-        panel.add(availablitycb);
-        availablitycb.setSelected(true);
 
         actorstf = new JTextField();
         actorstf.setBounds(129, 247, 662, 26);
@@ -167,20 +160,20 @@ public class Movie {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int r = table.getSelectedRow();
-                formattf.setText(model.getValueAt(r, 0).toString());
-                genretf.setText(model.getValueAt(r, 1).toString());
-                pricetf.setText(model.getValueAt(r, 2).toString());
-                quantitytf.setText(model.getValueAt(r, 3).toString());
-                availablitycb.setText(model.getValueAt(r, 4).toString());
-                actorstf.setText(model.getValueAt(r, 5).toString());
-                directorstf.setText(model.getValueAt(r, 6).toString());
-
+                titletf.setText(model.getValueAt(r, 1).toString());
+                formattf.setText(model.getValueAt(r, 2).toString());
+                genretf.setText(model.getValueAt(r, 3).toString());
+                pricetf.setText(model.getValueAt(r, 4).toString());
+                quantitytf.setText(model.getValueAt(r, 5).toString());
+                availablitycb.setText(model.getValueAt(r, 6).toString());
+                actorstf.setText(model.getValueAt(r, 7).toString());
+                directorstf.setText(model.getValueAt(r, 8).toString());
             }
         });
         table.setBackground(new Color(255, 240, 245));
 
 
-        String[] column = {"Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
+        String[] column = {"Id", "Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
         Object[][] movies = getMovies();
         model = new DefaultTableModel(movies, column);
         table.setModel(model);
@@ -195,29 +188,31 @@ public class Movie {
                     JOptionPane.showMessageDialog(null, "Please fill all the fields");
                 }
                 else {
+                    String id = FileStorageUtil.getId(FileStorageUtil.StorageType.MOVIES);
                     String title = titletf.getText();
                     String format = formattf.getText();
                     String genre = genretf.getText();
                     double price = Double.parseDouble(pricetf.getText());
                     int quantity = Integer.parseInt(quantitytf.getText());
-                    String[] actorArr = actorstf.getText().split(",");
-                    Actor actor = new Actor(actorArr[0],actorArr[1]);
                     List<Actor> actorList = new ArrayList<>();
-                    actorList.add(actor);
-                    String[] directorArr = directorstf.getText().split(",");
+                    String[] actorArr = actorstf.getText().split(",");
+                    for(String str : actorArr){
+                        String[] fullname = str.split(" ");
+                        Actor actor = new Actor(fullname[0],fullname[1]);
+                        actorList.add(actor);
+                    }
+                    String[] directorArr = directorstf.getText().split(" ");
                     Director dir = new Director(directorArr[0], directorArr[1]);
-                    business.Movie newMovie = new business.Movie(title, format, genre,actorList,dir, quantity,price);
-                    FileStorageUtil.saveObject("test1", newMovie, FileStorageUtil.StorageType.MOVIES);
+                    business.Movie newMovie = new business.Movie(id, title, format, genre,actorList,dir, quantity,price);
+                    FileStorageUtil.saveObject("test",newMovie, FileStorageUtil.StorageType.MOVIES);
                     JOptionPane.showMessageDialog(null, "Added Successfully");
                     String[] newRow = newMovie.asList();
                     model.addRow(newRow);
-                    // clear all the text fields
                     titletf.setText("");
                     formattf.setText("");
                     genretf.setText("");
                     pricetf.setText("");
                     quantitytf.setText("");
-                    availablitycb.setText("");
                     actorstf.setText("");
                     directorstf.setText("");
                 }
@@ -234,7 +229,6 @@ public class Movie {
                 if(r>=0) {
                     model.removeRow(r);
                     JOptionPane.showMessageDialog(null, "Deleted Successfully");
-
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Please select a row");
@@ -249,6 +243,7 @@ public class Movie {
             public void actionPerformed(ActionEvent e) {
                 int r = table.getSelectedRow();
                 if(r>=0) {
+
                     model.setValueAt(titletf.getText(), r, 0);
                     model.setValueAt(formattf.getText(), r, 1);
                     model.setValueAt(genretf.getText(), r, 2);
@@ -275,7 +270,6 @@ public class Movie {
                 genretf.setText("");
                 pricetf.setText("");
                 quantitytf.setText("");
-                availablitycb.setText("");
                 actorstf.setText("");
                 directorstf.setText("");
             }

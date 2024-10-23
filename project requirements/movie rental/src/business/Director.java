@@ -15,6 +15,6 @@ public class Director extends CrewMember implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s , %s ", this.getFirstName(), this.getLastName());
+        return String.format("%s %s ", this.getFirstName(), this.getLastName());
     }
 }
