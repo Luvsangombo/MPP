@@ -68,8 +68,9 @@ public class CheckOut {
     }
 
     public CheckOut(String memberId) {
-//        MemberUser mu = (MemberUser) FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
-//        this.member = mu;
+        MemberUser mu = (MemberUser) FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
+        this.member = mu;
+
 //        List<CheckoutRecord> crlist = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.CHECKOUTRECORD);
 //        Optional<CheckoutRecord> cr = crlist.stream().filter(x->x.getMember() == mu).findAny();
 //        if (cr.isPresent()) {
