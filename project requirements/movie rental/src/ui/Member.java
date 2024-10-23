@@ -281,7 +281,7 @@ public class Member {
                     checkoutWindow.bframe.setVisible(true);
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Please select a row");
+                    JOptionPane.showMessageDialog(null, "Please select Member");
                 }
             }
         });
