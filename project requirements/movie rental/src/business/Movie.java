@@ -15,17 +15,32 @@ public class Movie implements Serializable {
     private double price;
     private boolean availability;
 
-    public Movie(String title, String format, String genre, Author author, List<Actor> actors, Director director,
+
+    public Movie(String title, String format, String genre, List<Actor> actors, Director director,
             int quantity, double price) {
         this.title = title;
         this.format = format;
         this.genre = genre;
-        this.author = author;
         this.actors = actors;
         this.director = director;
         this.quantity = quantity;
         this.price = price;
         this.availability = (quantity > 0);
+    }
+
+
+
+    public String[] asList(){
+        String[] row = new String[8];
+            row[0] = this.getTitle();
+            row[1] = this.getFormat();
+            row[2] = this.getGenre();
+            row[3] = String.valueOf(this.getPrice());
+            row[4] = String.valueOf(this.getQuantity());
+            row[5] = String.valueOf(this.isAvailable());
+            row[6] = String.valueOf(this.getActors());
+            row[7] = this.getDirector().toString();
+        return row;
     }
 
     public boolean isAvailable() {

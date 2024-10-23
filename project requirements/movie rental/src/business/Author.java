@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Author extends CrewMember implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public Author(String firstName, String lastName, String bio) {
-        super(firstName, lastName, bio);
+    public Author(String firstName, String lastName) {
+        super(firstName, lastName);
     }
 
     public String getFullName() {

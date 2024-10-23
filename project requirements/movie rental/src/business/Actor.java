@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Actor extends CrewMember implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public Actor(String firstName, String lastName, String bio) {
-        super(firstName, lastName, bio);
+    public Actor(String firstName, String lastName) {
+        super(firstName, lastName);
     }
 
     public String getFullName() {
@@ -15,7 +15,7 @@ public class Actor extends CrewMember implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s , %s , %s", this.getFirstName(), this.getLastName(), this.getBio());
+        return String.format("%s , %s", this.getFirstName(), this.getLastName());
     }
 
 }

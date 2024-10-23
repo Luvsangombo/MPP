@@ -1,7 +1,10 @@
 package ui;
 
-import java.awt.EventQueue;
+import business.Actor;
+import business.Director;
+import dataaccess.FileStorageUtil;
 
+import java.awt.EventQueue;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +14,9 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Movie {
 
@@ -44,6 +50,15 @@ public class Movie {
                 }
             }
         });
+    }
+
+    private Object[][] getMovies(){
+        List<business.Movie> movies = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.MOVIES);
+        Object[][] list = new Object[movies.size()][8];
+            for(int i = 0; i < movies.size(); i++){
+                    list[i] = movies.get(i).asList();
+            }
+    return list;
     }
 
     /**
@@ -163,10 +178,11 @@ public class Movie {
             }
         });
         table.setBackground(new Color(255, 240, 245));
-        model = new DefaultTableModel();
+
+
         String[] column = {"Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
-        String[] row = new String[8];
-        model.setColumnIdentifiers(column);
+        Object[][] movies = getMovies();
+        model = new DefaultTableModel(movies, column);
         table.setModel(model);
         scrollPane.setViewportView(table);
 
@@ -174,22 +190,27 @@ public class Movie {
         btnadd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(titletf.getText().equals("")||formattf.getText().equals("")||genretf.getText().equals("")||pricetf.getText().equals("")
-                        ||quantitytf.getText().equals("")||availablitycb.getText().equals("")
+                        ||quantitytf.getText().equals("")
                         ||actorstf.getText().equals("")||directorstf.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Please fill all the fields");
                 }
                 else {
-                    // add the entered inputs to the table
-                    row[0] = titletf.getText();
-                    row[1] = formattf.getText();
-                    row[2] = genretf.getText();
-                    row[3] = pricetf.getText();
-                    row[4] = quantitytf.getText();
-                    row[5] = availablitycb.getText();
-                    row[6] = actorstf.getText();
-                    row[7] = directorstf.getText();
-                    model.addRow(row);
+                    String title = titletf.getText();
+                    String format = formattf.getText();
+                    String genre = genretf.getText();
+                    double price = Double.parseDouble(pricetf.getText());
+                    int quantity = Integer.parseInt(quantitytf.getText());
+                    String[] actorArr = actorstf.getText().split(",");
+                    Actor actor = new Actor(actorArr[0],actorArr[1]);
+                    List<Actor> actorList = new ArrayList<>();
+                    actorList.add(actor);
+                    String[] directorArr = directorstf.getText().split(",");
+                    Director dir = new Director(directorArr[0], directorArr[1]);
+                    business.Movie newMovie = new business.Movie(title, format, genre,actorList,dir, quantity,price);
+                    FileStorageUtil.saveObject("test1", newMovie, FileStorageUtil.StorageType.MOVIES);
                     JOptionPane.showMessageDialog(null, "Added Successfully");
+                    String[] newRow = newMovie.asList();
+                    model.addRow(newRow);
                     // clear all the text fields
                     titletf.setText("");
                     formattf.setText("");

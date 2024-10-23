@@ -59,12 +59,12 @@ public class App {
         }
 
         // Create an Actor object
-        Actor actor1 = new Actor("Leonardo", "DiCaprio", "bio");
-        Actor actor2 = new Actor("Meryl", "Streep", "bio");
-        Actor actor3 = new Actor("Tom", "Hanks", "bio");
-        Actor actor4 = new Actor("Natalie", "Portman", "bio");
-        Actor actor5 = new Actor("Brad", "Pitt", "bio");
-        Actor actor6 = new Actor("Emma", " Stone", "bio");
+        Actor actor1 = new Actor("Leonardo", "DiCaprio");
+        Actor actor2 = new Actor("Meryl", "Streep" );
+        Actor actor3 = new Actor("Tom", "Hanks" );
+        Actor actor4 = new Actor("Natalie", "Portman" );
+        Actor actor5 = new Actor("Brad", "Pitt" );
+        Actor actor6 = new Actor("Emma", " Stone" );
 
         // Save new Actor objects
         FileStorageUtil.saveObject("1", actor1, FileStorageUtil.StorageType.ACTOR);
@@ -80,7 +80,7 @@ public class App {
         System.out.println("Retrieved Actor: " + retrievedActor);
 
         // Update an Actor object
-        retrievedActor.setBio("updated bio"); // Update age
+   // Update age
         FileStorageUtil.saveObject("2", retrievedActor,
                 FileStorageUtil.StorageType.ACTOR);
         System.out.println("Updated Actor: " + FileStorageUtil.getObject("2",
@@ -100,8 +100,8 @@ public class App {
         }
 
         // Create an Author object
-        Author author1 = new Author("Isaac", "Asimov", "bio");
-        Author author2 = new Author("Dummy", "Author", "bio");
+        Author author1 = new Author("Isaac", "Asimov");
+        Author author2 = new Author("Dummy", "Author");
 
         // Save the author object to a file
         FileStorageUtil.saveObject("1", author1, FileStorageUtil.StorageType.AUTHOR);
@@ -112,7 +112,6 @@ public class App {
         System.out.println("Retrieved Author: " + loadedAuthor);
 
         // Update an Author object
-        loadedAuthor.setBio("updated author bio"); // Update age
         FileStorageUtil.saveObject("1", loadedAuthor,
                 FileStorageUtil.StorageType.AUTHOR);
         System.out.println("Updated Author: " + FileStorageUtil.getObject("1",
@@ -133,8 +132,8 @@ public class App {
 
         // Create a Director object
         // Create Director objects
-        Director director1 = new Director("Christopher", "Nolan", "bio");
-        Director director2 = new Director("Dummy", "Director", "bio");
+        Director director1 = new Director("Christopher", "Nolan");
+        Director director2 = new Director("Dummy", "Director");
 
         // Save the director objects to a file
         FileStorageUtil.saveObject("1", director1, FileStorageUtil.StorageType.DIRECTOR);
@@ -144,8 +143,7 @@ public class App {
         Director retrievedDirector = (Director) FileStorageUtil.getObject("1", FileStorageUtil.StorageType.DIRECTOR);
         System.out.println("Retrieved Director: " + retrievedDirector);
 
-        // Update a Director object
-        retrievedDirector.setBio("updated bio"); // Update the bio
+        // Update a Director object// Update the bio
         FileStorageUtil.saveObject("1", retrievedDirector, FileStorageUtil.StorageType.DIRECTOR);
         System.out.println("Updated Director: " + FileStorageUtil.getObject("1", FileStorageUtil.StorageType.DIRECTOR));
 
@@ -202,17 +200,17 @@ public class App {
         }
 
         // Create Movie objects
-        Movie movie1 = new Movie("Inception", "DVD", "Sci-Fi", author1, new ArrayList<>(Arrays.asList(actor1, actor2)),
+        Movie movie1 = new Movie("Inception", "DVD", "Sci-Fi", new ArrayList<>(Arrays.asList(actor1, actor2)),
                 director1, 5, 19.99);
-        Movie movie2 = new Movie("The Matrix", "Blu-Ray", "Sci-Fi", author1,
+        Movie movie2 = new Movie("The Matrix", "Blu-Ray", "Sci-Fi",
                 new ArrayList<>(Arrays.asList(actor1, actor3)), director1, 4, 14.99);
-        Movie movie3 = new Movie("La La Land", "Digital", "Romance", author1,
+        Movie movie3 = new Movie("La La Land", "Digital", "Romance",
                 new ArrayList<>(Arrays.asList(actor2, actor6)), director1, 5, 12.99);
-        Movie movie4 = new Movie("Forrest Gump", "DVD", "Drama", author1,
+        Movie movie4 = new Movie("Forrest Gump", "DVD", "Drama",
                 new ArrayList<>(Arrays.asList(actor3, actor5)), director1, 5, 15.99);
-        Movie movie5 = new Movie("Black Swan", "Blu-Ray", "Thriller", author1,
+        Movie movie5 = new Movie("Black Swan", "Blu-Ray", "Thriller",
                 new ArrayList<>(Arrays.asList(actor4, actor2)), director1, 4, 16.99);
-        Movie movie6 = new Movie("The Curious Case of Benjamin Button", "Digital", "Drama", author1,
+        Movie movie6 = new Movie("The Curious Case of Benjamin Button", "Digital", "Drama",
                 new ArrayList<>(Arrays.asList(actor5, actor3)), director1, 5, 17.99);
 
         // Save the Movie objects to a file

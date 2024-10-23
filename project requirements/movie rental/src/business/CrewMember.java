@@ -6,12 +6,10 @@ public class CrewMember implements Serializable {
     private static final long serialVersionUID = 1L;
     private String firstName;
     private String lastName;
-    private String bio;
 
-    public CrewMember(String firstName, String lastName, String bio) {
+    public CrewMember(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.bio = bio;
     }
 
     // Getters and Setters
@@ -24,9 +22,6 @@ public class CrewMember implements Serializable {
         this.lastName = lastName;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
 
     public String getFirstName() {
         return this.firstName;
@@ -36,7 +31,4 @@ public class CrewMember implements Serializable {
         return this.lastName;
     }
 
-    public String getBio() {
-        return this.bio;
-    }
 }
