@@ -92,7 +92,7 @@ public class FileStorageUtil {
         List<Movie> matchingMovies = new ArrayList<>();
 
         for (Movie movie : movieMap.values()) {
-            if (movie.getTitle().equalsIgnoreCase(title)) { // Case-insensitive match
+            if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) { // Case-insensitive match
                 matchingMovies.add(movie);
             }
         }

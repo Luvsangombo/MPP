@@ -10,7 +10,7 @@ public class Actor extends CrewMember implements Serializable {
     }
 
     public String getFullName() {
-        return this.getFirstName() + "" + this.getLastName();
+        return this.getFirstName() + " " + this.getLastName();
     }
 
     @Override

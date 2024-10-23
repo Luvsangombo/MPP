@@ -1,6 +1,8 @@
 package ui;
 
+import business.Actor;
 import business.MemberUser;
+import business.Movie;
 import dataaccess.FileStorageUtil;
 
 import java.awt.EventQueue;
@@ -23,6 +25,7 @@ import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CheckOut {
     private String memberId = null;
@@ -75,8 +78,11 @@ public class CheckOut {
             row[3] = String.valueOf(movie.getPrice());
             row[4] = String.valueOf(movie.getQuantity());
             row[5] = movie.isAvailable() ? "Yes" : "No";
-//            row[6] = movie.getActors();
-//            row[7] = movie.getDirector();
+            String actors = movie.getActors().stream()
+                            .map(x -> x.getFullName())
+                            .collect(Collectors.joining(", "));
+            row[6] = actors;
+            row[7] = movie.getDirector().toString();
             model.addRow(row);
         }
     }
@@ -205,5 +211,32 @@ public class CheckOut {
         });
         btnback.setBounds(306, 15, 117, 29);
         panel.add(btnback);
+
+        JButton btnsearch = new JButton("Search");
+        btnsearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String searchText = searchtf.getText();
+                List<business.Movie> result = FileStorageUtil.searchMovieByTitle(searchText);
+
+                if (modelMovie.getRowCount() > 0) {
+                    for (int i = modelMovie.getRowCount() - 1; i > -1; i--) {
+                        modelMovie.removeRow(i);
+                    }
+                }
+
+                for (business.Movie movie : result) {
+                    rowMovie[0] = String.valueOf(movie.getTitle());
+                    rowMovie[1] = movie.getFormat();
+                    rowMovie[2] = movie.getGenre();
+                    rowMovie[3] = String.valueOf(movie.getPrice());
+                    rowMovie[4] = String.valueOf(movie.getQuantity());
+                    rowMovie[5] = movie.isAvailable() ? "Yes" : "No";
+
+                    modelMovie.addRow(rowMovie);
+                }
+            }
+        });
+        btnsearch.setBounds(300, 360, 161, 26);
+        panel.add(btnsearch);
     }
 }
