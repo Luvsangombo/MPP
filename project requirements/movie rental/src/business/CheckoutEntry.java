@@ -6,11 +6,17 @@ import java.time.LocalDate;
 public class CheckoutEntry implements Serializable {
     private static final long serialVersionUID = 1L;
     private Movie movie;
+    private double totalAmount;
     private LocalDate checkoutDate;
     private LocalDate dueDate;
 
-    public CheckoutEntry(Movie movie, LocalDate checkoutDate, LocalDate dueDate) {
+    public CheckoutEntry(Movie movie) {
         this.movie = movie;
+    }
+
+    public CheckoutEntry(Movie movie, double totalAmount, LocalDate checkoutDate, LocalDate dueDate) {
+        this.movie = movie;
+        this.totalAmount = totalAmount;
         this.checkoutDate = checkoutDate;
         this.dueDate = dueDate;
     }
@@ -34,5 +40,13 @@ public class CheckoutEntry implements Serializable {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

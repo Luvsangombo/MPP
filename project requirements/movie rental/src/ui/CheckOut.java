@@ -1,6 +1,7 @@
 package ui;
 
 import business.Actor;
+import business.CheckoutRecord;
 import business.MemberUser;
 import business.Movie;
 import dataaccess.FileStorageUtil;
@@ -25,10 +26,12 @@ import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CheckOut {
-    private String memberId = null;
+    private MemberUser member;
+    private CheckoutRecord record;
     JFrame bframe;
     DefaultTableModel modelCheckout;
     DefaultTableModel modelMovie;
@@ -65,24 +68,36 @@ public class CheckOut {
     }
 
     public CheckOut(String memberId) {
-        this.memberId = memberId;
+        MemberUser mu = (MemberUser) FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
+        this.member = mu;
+//        List<CheckoutRecord> crlist = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.CHECKOUTRECORD);
+//        Optional<CheckoutRecord> cr = crlist.stream().filter(x->x.getMember() == mu).findAny();
+//        if (cr.isPresent()) {
+//            record = cr.get();
+//        } else {
+//            CheckoutRecord newCr = new CheckoutRecord(mu);
+//            FileStorageUtil.saveObject(, newCr, FileStorageUtil.StorageType.CHECKOUTRECORD);
+//            record = newCr;
+//        }
+
         initialize();
     }
 
     private void getMovieData(DefaultTableModel model, String[] row) {
         List<business.Movie> movies = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.MOVIES);
         for (business.Movie movie : movies) {
-            row[0] = String.valueOf(movie.getTitle());
-            row[1] = movie.getFormat();
-            row[2] = movie.getGenre();
-            row[3] = String.valueOf(movie.getPrice());
-            row[4] = String.valueOf(movie.getQuantity());
-            row[5] = movie.isAvailable() ? "Yes" : "No";
+            row[0] = movie.getId();
+            row[1] = String.valueOf(movie.getTitle());
+            row[2] = movie.getFormat();
+            row[3] = movie.getGenre();
+            row[4] = String.valueOf(movie.getPrice());
+            row[5] = String.valueOf(movie.getQuantity());
+            row[6] = movie.isAvailable() ? "Yes" : "No";
             String actors = movie.getActors().stream()
                             .map(x -> x.getFullName())
                             .collect(Collectors.joining(", "));
-            row[6] = actors;
-            row[7] = movie.getDirector().toString();
+            row[7] = actors;
+            row[8] = movie.getDirector().toString();
             model.addRow(row);
         }
     }
@@ -137,11 +152,8 @@ public class CheckOut {
         tableCheckout.setModel(modelCheckout);
         scrollPaneCheckout.setViewportView(tableCheckout);
 
-        if (memberId != null) {
-            MemberUser retrievedUser = (MemberUser) FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
-            System.out.println("Retrieved MemberUser: " + retrievedUser);
-
-            JLabel memberNameLabel = new JLabel(retrievedUser.getFullName());
+        if (member != null) {
+            JLabel memberNameLabel = new JLabel(member.getFullName());
             memberNameLabel.setBounds(500, 20, 150, 16);
             panel.add(memberNameLabel);
         }
@@ -165,8 +177,8 @@ public class CheckOut {
         });
         tableMovie.setBackground(new Color(255, 240, 245));
         modelMovie = new DefaultTableModel();
-        String[] columnMovie = {"Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
-        String[] rowMovie = new String[8];
+        String[] columnMovie = {"ID", "Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
+        String[] rowMovie = new String[9];
         modelMovie.setColumnIdentifiers(columnMovie);
         tableMovie.setModel(modelMovie);
         scrollPaneMovie.setViewportView(tableMovie);
@@ -178,6 +190,18 @@ public class CheckOut {
         JButton btnadd = new JButton("Checkout");
         btnadd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                int r = tableMovie.getSelectedRow();
+                if(r>=0 && member != null) {
+                    String id = modelMovie.getValueAt(r, 0).toString();
+                    Movie movie = FileStorageUtil.getObject(id, FileStorageUtil.StorageType.MOVIES);
+//
+//                    bframe.setVisible(false);
+//                    CheckOut checkoutWindow = new CheckOut(id);
+//                    checkoutWindow.bframe.setVisible(true);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Please select the Movie.");
+                }
             }
         });
         btnadd.setBounds(6, 15, 117, 29);
@@ -225,12 +249,18 @@ public class CheckOut {
                 }
 
                 for (business.Movie movie : result) {
-                    rowMovie[0] = String.valueOf(movie.getTitle());
-                    rowMovie[1] = movie.getFormat();
-                    rowMovie[2] = movie.getGenre();
-                    rowMovie[3] = String.valueOf(movie.getPrice());
-                    rowMovie[4] = String.valueOf(movie.getQuantity());
-                    rowMovie[5] = movie.isAvailable() ? "Yes" : "No";
+                    rowMovie[0] = movie.getId();
+                    rowMovie[1] = String.valueOf(movie.getTitle());
+                    rowMovie[2] = movie.getFormat();
+                    rowMovie[3] = movie.getGenre();
+                    rowMovie[4] = String.valueOf(movie.getPrice());
+                    rowMovie[5] = String.valueOf(movie.getQuantity());
+                    rowMovie[6] = movie.isAvailable() ? "Yes" : "No";
+                    String actors = movie.getActors().stream()
+                            .map(x -> x.getFullName())
+                            .collect(Collectors.joining(", "));
+                    rowMovie[7] = actors;
+                    rowMovie[8] = movie.getDirector().toString();
 
                     modelMovie.addRow(rowMovie);
                 }

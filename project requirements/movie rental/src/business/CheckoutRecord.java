@@ -1,22 +1,33 @@
 package business;
 
+import dataaccess.FileStorageUtil;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class CheckoutRecord implements Serializable {
     private static final long serialVersionUID = 1L;
+    private int id;
     private MemberUser member;
-    private double totalAmount;
     private List<CheckoutEntry> checkoutEntries;
 
-    public CheckoutRecord(MemberUser member, double totalAmount, List<CheckoutEntry> checkoutEntries) {
+    public CheckoutRecord(MemberUser member) {
         this.member = member;
-        this.totalAmount = totalAmount;
-        this.checkoutEntries = checkoutEntries;
+//        this.id = ;
+//        this.checkoutEntries = checkoutEntries;
     }
 
     public void addCheckoutEntry(CheckoutEntry entry) {
         this.checkoutEntries.add(entry);
+    }
+
+    public int generateId() {
+        List<CheckoutRecord> crlist = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.CHECKOUTRECORD);
+        return 1;
+    }
+
+    public int getId() {
+        return id;
     }
 
     // Getters and Setters
@@ -28,11 +39,5 @@ public class CheckoutRecord implements Serializable {
         this.member = member;
     }
 
-    public double getTotalAmount() {
-        return totalAmount;
-    }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 }
