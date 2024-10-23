@@ -5,10 +5,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import business.Movie;
 import dataaccess.FileStorageUtil.StorageType;
@@ -89,7 +86,13 @@ public class FileStorageUtil {
 
     public static <T> String getId(StorageType type) {
         HashMap<String, T> map = loadMap(type);
-        return String.valueOf(map.size());
+        String key = "";
+        for(Map.Entry<String, T> entry : map.entrySet()) {
+            key = entry.getKey();
+        }
+
+
+        return String.valueOf(Integer.parseInt(key) + 1);
     }
 
     // New method to search movies by title
@@ -103,5 +106,13 @@ public class FileStorageUtil {
             }
         }
         return matchingMovies;
+    }
+
+    public static <T> void deleteAll(StorageType type) {
+
+        HashMap<String, T> map = loadMap(type);
+        map = new HashMap<String, T>();
+        saveMap(map, type);
+
     }
 }

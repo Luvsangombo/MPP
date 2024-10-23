@@ -61,6 +61,80 @@ public class Movie {
     return list;
     }
 
+    private business.Movie getMovie(){
+        if(titletf.getText().equals("")||formattf.getText().equals("")||genretf.getText().equals("")||pricetf.getText().equals("")
+                ||quantitytf.getText().equals("")
+                ||actorstf.getText().equals("")||directorstf.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Please fill all the fields");
+        }
+        String title = titletf.getText();
+        String format = formattf.getText();
+        String genre = genretf.getText();
+        double price = Double.parseDouble(pricetf.getText());
+        int quantity = Integer.parseInt(quantitytf.getText());
+        List<Actor> actorList = new ArrayList<>();
+        String[] actorArr = actorstf.getText().split(",");
+        for(String str : actorArr){
+            String[] fullname = str.trim().split(" ");
+            Actor actor = new Actor(fullname[0],fullname[1]);
+            actorList.add(actor);
+        }
+        String id = FileStorageUtil.getId(FileStorageUtil.StorageType.MOVIES);
+        String[] directorArr = directorstf.getText().split(" ");
+        Director dir = new Director(directorArr[0], directorArr[1]);
+        business.Movie newMovie = new business.Movie(id, title, format, genre,actorList,dir, quantity,price);
+        return newMovie;
+    }
+
+    private void setModelEmpty() {
+        titletf.setText("");
+        formattf.setText("");
+        genretf.setText("");
+        pricetf.setText("");
+        quantitytf.setText("");
+        actorstf.setText("");
+        directorstf.setText("");
+    }
+
+    private void addMovie() {
+        business.Movie newMovie = getMovie();
+        FileStorageUtil.saveObject(newMovie.getId(),newMovie, FileStorageUtil.StorageType.MOVIES);
+        JOptionPane.showMessageDialog(null, "Added Successfully");
+        setModelEmpty();
+        initializeTable();
+    }
+    private void updateMovie() {
+        int r = table.getSelectedRow();
+        if(r>=0) {
+            String id = model.getValueAt(r, 0).toString();
+            business.Movie newMovie = getMovie();
+            newMovie.setId(id);
+            FileStorageUtil.saveObject(id, newMovie, FileStorageUtil.StorageType.MOVIES);
+            setModelEmpty();
+            initializeTable();
+            JOptionPane.showMessageDialog(null, "Updated Successfully");
+        }
+    }
+    private void initializeTable() {
+        String[] column = {"Id", "Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
+        Object[][] movies = getMovies();
+        model = new DefaultTableModel(movies, column);
+        table.setModel(model);
+    }
+    private void deleteMovie(){
+
+        int r = table.getSelectedRow();
+        if(r>=0) {
+            String id = model.getValueAt(r, 0).toString();
+            FileStorageUtil.deleteObject(id, FileStorageUtil.StorageType.MOVIES);
+            initializeTable();
+            JOptionPane.showMessageDialog(null, "Deleted Successfully");
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select a row");
+        }
+    }
+
     /**
      * Create the application.
      */
@@ -165,58 +239,18 @@ public class Movie {
                 genretf.setText(model.getValueAt(r, 3).toString());
                 pricetf.setText(model.getValueAt(r, 4).toString());
                 quantitytf.setText(model.getValueAt(r, 5).toString());
-//                availablitycb.setText(model.getValueAt(r, 6).toString());
-                actorstf.setText(model.getValueAt(r, 7).toString());
+                actorstf.setText(model.getValueAt(r, 7).toString().replaceAll("[\\[\\]]",""));
                 directorstf.setText(model.getValueAt(r, 8).toString());
             }
         });
         table.setBackground(new Color(255, 240, 245));
-
-
-        String[] column = {"Id", "Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
-        Object[][] movies = getMovies();
-        model = new DefaultTableModel(movies, column);
-        table.setModel(model);
+        initializeTable();
         scrollPane.setViewportView(table);
 
         JButton btnadd = new JButton("Add");
         btnadd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(titletf.getText().equals("")||formattf.getText().equals("")||genretf.getText().equals("")||pricetf.getText().equals("")
-                        ||quantitytf.getText().equals("")
-                        ||actorstf.getText().equals("")||directorstf.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please fill all the fields");
-                }
-                else {
-                    String id = FileStorageUtil.getId(FileStorageUtil.StorageType.MOVIES);
-                    String title = titletf.getText();
-                    String format = formattf.getText();
-                    String genre = genretf.getText();
-                    double price = Double.parseDouble(pricetf.getText());
-                    int quantity = Integer.parseInt(quantitytf.getText());
-                    List<Actor> actorList = new ArrayList<>();
-                    String[] actorArr = actorstf.getText().split(",");
-                    for(String str : actorArr){
-                        String[] fullname = str.split(" ");
-                        Actor actor = new Actor(fullname[0],fullname[1]);
-                        actorList.add(actor);
-                    }
-                    String[] directorArr = directorstf.getText().split(" ");
-                    Director dir = new Director(directorArr[0], directorArr[1]);
-                    business.Movie newMovie = new business.Movie(id, title, format, genre,actorList,dir, quantity,price);
-                    FileStorageUtil.saveObject("test",newMovie, FileStorageUtil.StorageType.MOVIES);
-                    JOptionPane.showMessageDialog(null, "Added Successfully");
-                    String[] newRow = newMovie.asList();
-                    model.addRow(newRow);
-                    titletf.setText("");
-                    formattf.setText("");
-                    genretf.setText("");
-                    pricetf.setText("");
-                    quantitytf.setText("");
-                    actorstf.setText("");
-                    directorstf.setText("");
-                }
-
+                   addMovie();
             }
         });
         btnadd.setBounds(450, 15, 117, 29);
@@ -225,14 +259,8 @@ public class Movie {
         JButton btndel = new JButton("Delete");
         btndel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int r = table.getSelectedRow();
-                if(r>=0) {
-                    model.removeRow(r);
-                    JOptionPane.showMessageDialog(null, "Deleted Successfully");
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "Please select a row");
-                }
+                deleteMovie();
+
             }
         });
         btndel.setBounds(600, 15, 117, 29);
@@ -243,16 +271,7 @@ public class Movie {
             public void actionPerformed(ActionEvent e) {
                 int r = table.getSelectedRow();
                 if(r>=0) {
-
-                    model.setValueAt(titletf.getText(), r, 0);
-                    model.setValueAt(formattf.getText(), r, 1);
-                    model.setValueAt(genretf.getText(), r, 2);
-                    model.setValueAt(pricetf.getText(), r, 3);
-                    model.setValueAt(quantitytf.getText(), r, 4);
-                    model.setValueAt(availablitycb.getText(), r, 5);
-                    model.setValueAt(actorstf.getText(), r, 6);
-                    model.setValueAt(directorstf.getText(), r, 7);
-                    JOptionPane.showMessageDialog(null, "Updated Successfully");
+                    updateMovie();
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Please select a row");
