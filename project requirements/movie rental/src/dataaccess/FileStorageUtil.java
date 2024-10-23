@@ -90,8 +90,6 @@ public class FileStorageUtil {
         for(Map.Entry<String, T> entry : map.entrySet()) {
             key = entry.getKey();
         }
-
-
         return String.valueOf(Integer.parseInt(key) + 1);
     }
 

@@ -215,17 +215,17 @@ public class Movie {
 
 
         actorstf = new JTextField();
-        actorstf.setBounds(129, 247, 662, 26);
+        actorstf.setBounds(129, 247, 500, 26);
         panel.add(actorstf);
         actorstf.setColumns(10);
 
         directorstf = new JTextField();
-        directorstf.setBounds(129, 287, 662, 26);
+        directorstf.setBounds(129, 287, 500, 26);
         panel.add(directorstf);
         directorstf.setColumns(10);
 
         scrollPane = new JScrollPane();
-        scrollPane.setBounds(6, 340, 782, 287);
+        scrollPane.setBounds(6, 340, 750, 287);
         panel.add(scrollPane);
 
         table = new JTable();

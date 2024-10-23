@@ -22,12 +22,11 @@ import javax.swing.JTextField;
 import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.JScrollPane;
-import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 public class CheckOut {
     private MemberUser member;
@@ -35,11 +34,14 @@ public class CheckOut {
     JFrame bframe;
     DefaultTableModel modelCheckout;
     DefaultTableModel modelMovie;
+    DefaultTableModel modelEntry;
     private JTextField searchtf;
     private JTable tableCheckout;
     private JTable tableMovie;
+    private JTable tableEntries;
     private JScrollPane scrollPaneCheckout;
     private JScrollPane scrollPaneMovie;
+    private JScrollPane scrollPaneEntries;
 
     /**
      * Launch the application.
@@ -63,6 +65,30 @@ public class CheckOut {
     /**
      * Create the application.
      */
+    public void add(){
+        int r = tableMovie.getSelectedRow();
+        if(r>=0) {
+
+            String id = modelMovie.getValueAt(r, 0).toString();
+            String title = modelMovie.getValueAt(r, 1).toString();
+            String quantity = modelMovie.getValueAt(r, 2).toString();
+            if(Integer.valueOf(quantity) == 0 ){
+                JOptionPane.showMessageDialog(bframe, "Not available");
+            }
+            String newQuantity = String.valueOf(Integer.valueOf(quantity)-1);
+            modelMovie.setValueAt(newQuantity,r,2);
+            String price = modelMovie.getValueAt(r, 3).toString();
+            LocalDate date = LocalDate.now();
+            LocalDate dueDate = date.plusDays(7);
+            String[] row = {id, title,price, date.toString(), dueDate.toString()};
+            modelEntry.addRow(row);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select the Movie.");
+        }
+
+
+    }
     public CheckOut() {
         initialize();
     }
@@ -88,16 +114,8 @@ public class CheckOut {
         for (business.Movie movie : movies) {
             row[0] = movie.getId();
             row[1] = String.valueOf(movie.getTitle());
-            row[2] = movie.getFormat();
-            row[3] = movie.getGenre();
-            row[4] = String.valueOf(movie.getPrice());
-            row[5] = String.valueOf(movie.getQuantity());
-            row[6] = movie.isAvailable() ? "Yes" : "No";
-            String actors = movie.getActors().stream()
-                            .map(x -> x.getFullName())
-                            .collect(Collectors.joining(", "));
-            row[7] = actors;
-            row[8] = movie.getDirector().toString();
+            row[2] = String.valueOf(movie.getQuantity());
+            row[3] = String.valueOf(movie.getPrice());
             model.addRow(row);
         }
     }
@@ -118,12 +136,10 @@ public class CheckOut {
         panel.setLayout(null);
         bframe.getContentPane().add(panel);
 
-        JLabel searchMovieTitleLabel = new JLabel("Search Movie Title");
-        searchMovieTitleLabel.setBounds(6, 365, 150, 16);
-        panel.add(searchMovieTitleLabel);
+
 
         searchtf = new JTextField();
-        searchtf.setBounds(129, 360, 161, 26);
+        searchtf.setBounds(6, 360, 161, 26);
         panel.add(searchtf);
         searchtf.setColumns(10);
 
@@ -160,7 +176,7 @@ public class CheckOut {
 
         // Movie Table
         scrollPaneMovie = new JScrollPane();
-        scrollPaneMovie.setBounds(6, 390, 782, 267);
+        scrollPaneMovie.setBounds(6, 390, 360, 200);
         panel.add(scrollPaneMovie);
 
         tableMovie = new JTable();
@@ -177,7 +193,7 @@ public class CheckOut {
         });
         tableMovie.setBackground(new Color(255, 240, 245));
         modelMovie = new DefaultTableModel();
-        String[] columnMovie = {"ID", "Title", "Format","Genre","Price","Quantity","Availability","Actors","Directors"};
+        String[] columnMovie = {"ID", "Title","Quantity", "Price"};
         String[] rowMovie = new String[9];
         modelMovie.setColumnIdentifiers(columnMovie);
         tableMovie.setModel(modelMovie);
@@ -185,6 +201,21 @@ public class CheckOut {
 
         // Retreive all data;
         getMovieData(modelMovie, rowMovie);
+
+
+
+        scrollPaneEntries = new JScrollPane();
+        scrollPaneEntries.setBounds(420, 390, 350, 200);
+        panel.add(scrollPaneEntries);
+        tableEntries = new JTable();
+
+        String[] columnEntries = {"Movie Id", "Title", "Price","Date", "Due Date"};
+        modelEntry = new DefaultTableModel();
+        modelEntry.setColumnIdentifiers(columnEntries);
+        tableEntries.setModel(modelEntry);
+        scrollPaneEntries.setViewportView(tableEntries);
+
+
 
 
         JButton btnadd = new JButton("Checkout");
@@ -251,22 +282,24 @@ public class CheckOut {
                 for (business.Movie movie : result) {
                     rowMovie[0] = movie.getId();
                     rowMovie[1] = String.valueOf(movie.getTitle());
-                    rowMovie[2] = movie.getFormat();
-                    rowMovie[3] = movie.getGenre();
-                    rowMovie[4] = String.valueOf(movie.getPrice());
-                    rowMovie[5] = String.valueOf(movie.getQuantity());
-                    rowMovie[6] = movie.isAvailable() ? "Yes" : "No";
-                    String actors = movie.getActors().stream()
-                            .map(x -> x.getFullName())
-                            .collect(Collectors.joining(", "));
-                    rowMovie[7] = actors;
-                    rowMovie[8] = movie.getDirector().toString();
-
+                    rowMovie[2] = String.valueOf(movie.getQuantity());
+                    rowMovie[3] = String.valueOf(movie.getPrice());
                     modelMovie.addRow(rowMovie);
                 }
             }
         });
-        btnsearch.setBounds(300, 360, 161, 26);
+        btnsearch.setBounds(170, 360, 161, 26);
         panel.add(btnsearch);
+
+
+        JButton btnAdd = new JButton("add");
+        btnAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               add();
+
+            }
+        });
+        btnAdd.setBounds(450, 360, 161, 26);
+        panel.add(btnAdd);
     }
 }
