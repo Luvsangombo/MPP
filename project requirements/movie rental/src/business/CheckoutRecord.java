@@ -4,14 +4,15 @@ import dataaccess.FileStorageUtil;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public class CheckoutRecord implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int id;
+    private String id;
     private MemberUser member;
     private List<CheckoutEntry> checkoutEntries;
 
-    public CheckoutRecord(MemberUser member) {
+    public CheckoutRecord(String id, MemberUser member) {
         this.member = member;
 //        this.id = ;
 //        this.checkoutEntries = checkoutEntries;
@@ -21,12 +22,7 @@ public class CheckoutRecord implements Serializable {
         this.checkoutEntries.add(entry);
     }
 
-    public int generateId() {
-        List<CheckoutRecord> crlist = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.CHECKOUTRECORD);
-        return 1;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
