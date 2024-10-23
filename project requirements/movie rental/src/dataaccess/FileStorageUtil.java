@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import business.Movie;
+import dataaccess.FileStorageUtil.StorageType;
+
 import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -81,5 +84,18 @@ public class FileStorageUtil {
     public static <T> List<T> listAllObjects(StorageType type) {
         HashMap<String, T> map = loadMap(type);
         return new ArrayList<>(map.values());
+    }
+
+    // New method to search movies by title
+    public static List<Movie> searchMovieByTitle(String title) {
+        HashMap<String, Movie> movieMap = loadMap(StorageType.MOVIES);
+        List<Movie> matchingMovies = new ArrayList<>();
+
+        for (Movie movie : movieMap.values()) {
+            if (movie.getTitle().equalsIgnoreCase(title)) { // Case-insensitive match
+                matchingMovies.add(movie);
+            }
+        }
+        return matchingMovies;
     }
 }
