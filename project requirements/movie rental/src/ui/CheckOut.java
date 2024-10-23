@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class CheckOut {
     private String memberId = null;
@@ -63,6 +64,21 @@ public class CheckOut {
     public CheckOut(String memberId) {
         this.memberId = memberId;
         initialize();
+    }
+
+    private void getMovieData(DefaultTableModel model, String[] row) {
+        List<business.Movie> movies = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.MOVIES);
+        for (business.Movie movie : movies) {
+            row[0] = String.valueOf(movie.getTitle());
+            row[1] = movie.getFormat();
+            row[2] = movie.getGenre();
+            row[3] = String.valueOf(movie.getPrice());
+            row[4] = String.valueOf(movie.getQuantity());
+            row[5] = movie.isAvailable() ? "Yes" : "No";
+//            row[6] = movie.getActors();
+//            row[7] = movie.getDirector();
+            model.addRow(row);
+        }
     }
 
     /**
@@ -148,6 +164,9 @@ public class CheckOut {
         modelMovie.setColumnIdentifiers(columnMovie);
         tableMovie.setModel(modelMovie);
         scrollPaneMovie.setViewportView(tableMovie);
+
+        // Retreive all data;
+        getMovieData(modelMovie, rowMovie);
 
 
         JButton btnadd = new JButton("Checkout");
