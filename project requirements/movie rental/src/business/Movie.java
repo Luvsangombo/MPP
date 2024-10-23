@@ -112,6 +112,10 @@ public class Movie implements Serializable {
         this.price = price;
     }
 
+    public String getId(){
+        return this.id;
+    }
+
     @Override
     public String toString() {
         return String.format("%s , %s , %s , %s , %s , %s , %s", this.getTitle(), this.getGenre(), this.getFormat(),

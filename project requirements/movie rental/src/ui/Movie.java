@@ -165,7 +165,7 @@ public class Movie {
                 genretf.setText(model.getValueAt(r, 3).toString());
                 pricetf.setText(model.getValueAt(r, 4).toString());
                 quantitytf.setText(model.getValueAt(r, 5).toString());
-                availablitycb.setText(model.getValueAt(r, 6).toString());
+//                availablitycb.setText(model.getValueAt(r, 6).toString());
                 actorstf.setText(model.getValueAt(r, 7).toString());
                 directorstf.setText(model.getValueAt(r, 8).toString());
             }

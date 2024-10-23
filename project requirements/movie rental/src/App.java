@@ -200,56 +200,56 @@ public class App {
         }
 
                 // Create Movie objects
-//                Movie movie1 = new Movie("Inception", "DVD", "Sci-Fi", new ArrayList<>(Arrays.asList(actor1, actor2)),
-//                                director1, 5, 19.99);
-//                Movie movie2 = new Movie("The Matrix", "Blu-Ray", "Sci-Fi",
-//                                new ArrayList<>(Arrays.asList(actor1, actor3)), director1, 4, 14.99);
-//                Movie movie3 = new Movie("La La Land", "Digital", "Romance",
-//                                new ArrayList<>(Arrays.asList(actor2, actor6)), director1, 5, 12.99);
-//                Movie movie4 = new Movie("Forrest Gump", "DVD", "Drama",
-//                                new ArrayList<>(Arrays.asList(actor3, actor5)), director1, 5, 15.99);
-//                Movie movie5 = new Movie("Black Swan", "Blu-Ray", "Thriller",
-//                                new ArrayList<>(Arrays.asList(actor4, actor2)), director1, 4, 16.99);
-//                Movie movie6 = new Movie("The Curious Case of Benjamin Button", "Digital", "Drama",
-//                                new ArrayList<>(Arrays.asList(actor5, actor3)), director1, 5, 17.99);
-//                System.out.println("#####################");
-//
-//                List<Movie> result = FileStorageUtil.searchMovieByTitle("1forrest gump");
-//                for (Movie movie : result) {
-//                        System.out.println(movie);
-//                }
-//
-//                System.out.println("#####################");
-//                // Save the Movie objects to a file
-//                FileStorageUtil.saveObject("1", movie1, FileStorageUtil.StorageType.MOVIES);
-//                FileStorageUtil.saveObject("2", movie2, FileStorageUtil.StorageType.MOVIES);
-//                FileStorageUtil.saveObject("3", movie3, FileStorageUtil.StorageType.MOVIES);
-//                FileStorageUtil.saveObject("4", movie4, FileStorageUtil.StorageType.MOVIES);
-//                FileStorageUtil.saveObject("5", movie5, FileStorageUtil.StorageType.MOVIES);
-//                FileStorageUtil.saveObject("6", movie6, FileStorageUtil.StorageType.MOVIES);
-//
-//                // Retrieve a Movie object
-//                Movie retrievedMovie = (Movie) FileStorageUtil.getObject("1", FileStorageUtil.StorageType.MOVIES);
-//                System.out.println("Retrieved Movie: " + retrievedMovie);
-//
-//                // Update a Movie object
-//                retrievedMovie.setPrice(21.99); // Update the price
-//                FileStorageUtil.saveObject("1", retrievedMovie, FileStorageUtil.StorageType.MOVIES);
-//                System.out.println(
-//                                "Updated Movie: " + FileStorageUtil.getObject("1", FileStorageUtil.StorageType.MOVIES));
-//
-//                // Delete a Movie object
-//                FileStorageUtil.deleteObject("6", FileStorageUtil.StorageType.MOVIES);
-//                System.out.println(
-//                                "Movie6 exists after deletion: "
-//                                                + FileStorageUtil.exists("6", FileStorageUtil.StorageType.MOVIES));
-//
-//                // List all Movie objects
-//                List<Movie> allMovies = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.MOVIES);
-//                System.out.println("All Movies:");
-//                for (Movie movie : allMovies) {
-//                        System.out.println(movie);
-//                }
+                Movie movie1 = new Movie("6","Inception", "DVD", "Sci-Fi", new ArrayList<>(Arrays.asList(actor1, actor2)),
+                                director1, 5, 19.99);
+                Movie movie2 = new Movie("1","The Matrix", "Blu-Ray", "Sci-Fi",
+                                new ArrayList<>(Arrays.asList(actor1, actor3)), director1, 4, 14.99);
+                Movie movie3 = new Movie("2","La La Land", "Digital", "Romance",
+                                new ArrayList<>(Arrays.asList(actor2, actor6)), director1, 5, 12.99);
+                Movie movie4 = new Movie("3","Forrest Gump", "DVD", "Drama",
+                                new ArrayList<>(Arrays.asList(actor3, actor5)), director1, 5, 15.99);
+                Movie movie5 = new Movie("4","Black Swan", "Blu-Ray", "Thriller",
+                                new ArrayList<>(Arrays.asList(actor4, actor2)), director1, 4, 16.99);
+                Movie movie6 = new Movie("5","The Curious Case of Benjamin Button", "Digital", "Drama",
+                                new ArrayList<>(Arrays.asList(actor5, actor3)), director1, 5, 17.99);
+                System.out.println("#####################");
+
+                List<Movie> result = FileStorageUtil.searchMovieByTitle("1forrest gump");
+                for (Movie movie : result) {
+                        System.out.println(movie);
+                }
+
+                System.out.println("#####################");
+                // Save the Movie objects to a file
+                FileStorageUtil.saveObject(movie1.getId(), movie1, FileStorageUtil.StorageType.MOVIES);
+                FileStorageUtil.saveObject(movie2.getId(), movie2, FileStorageUtil.StorageType.MOVIES);
+                FileStorageUtil.saveObject(movie3.getId(), movie3, FileStorageUtil.StorageType.MOVIES);
+                FileStorageUtil.saveObject(movie4.getId(), movie4, FileStorageUtil.StorageType.MOVIES);
+                FileStorageUtil.saveObject(movie5.getId(), movie5, FileStorageUtil.StorageType.MOVIES);
+                FileStorageUtil.saveObject(movie6.getId(), movie6, FileStorageUtil.StorageType.MOVIES);
+
+                // Retrieve a Movie object
+                Movie retrievedMovie = (Movie) FileStorageUtil.getObject("1", FileStorageUtil.StorageType.MOVIES);
+                System.out.println("Retrieved Movie: " + retrievedMovie);
+
+                // Update a Movie object
+                retrievedMovie.setPrice(21.99); // Update the price
+                FileStorageUtil.saveObject("1", retrievedMovie, FileStorageUtil.StorageType.MOVIES);
+                System.out.println(
+                                "Updated Movie: " + FileStorageUtil.getObject("1", FileStorageUtil.StorageType.MOVIES));
+
+                // Delete a Movie object
+                FileStorageUtil.deleteObject("6", FileStorageUtil.StorageType.MOVIES);
+                System.out.println(
+                                "Movie6 exists after deletion: "
+                                                + FileStorageUtil.exists("6", FileStorageUtil.StorageType.MOVIES));
+
+                // List all Movie objects
+                List<Movie> allMovies = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.MOVIES);
+                System.out.println("All Movies:");
+                for (Movie movie : allMovies) {
+                        System.out.println(movie);
+                }
                 // // Load the movie object from the file
                 // Movie loadedMovie = (Movie)
                 // FileStorageUtil.loadObject(FileStorageUtil.StorageType.MOVIES);
