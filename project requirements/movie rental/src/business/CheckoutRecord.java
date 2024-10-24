@@ -11,17 +11,19 @@ public class CheckoutRecord implements Serializable {
     private String id;
     private MemberUser member;
     private List<CheckoutEntry> checkoutEntries;
+    private double price;
+    public boolean isReturned = false;
 
-    public CheckoutRecord(String id, MemberUser member) {
+    public CheckoutRecord(String id, MemberUser member, List<CheckoutEntry> checkoutEntries) {
         this.member = member;
-//        this.id = ;
-//        this.checkoutEntries = checkoutEntries;
-    }
+        this.id = id;
+        this.checkoutEntries = checkoutEntries;
 
-    public void addCheckoutEntry(CheckoutEntry entry) {
-        this.checkoutEntries.add(entry);
     }
-
+    public void checking(){
+        increaseQuantity();
+        this.isReturned = true;
+    }
     public String getId() {
         return id;
     }
@@ -31,9 +33,32 @@ public class CheckoutRecord implements Serializable {
         return member;
     }
 
-    public void setMember(MemberUser member) {
-        this.member = member;
+    public List<CheckoutEntry> getCheckoutEntries() {
+        return checkoutEntries;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
+    public double getPrice() {
+        return this.price;
+    }
+
+    public void decreaseQuantity(){
+        checkoutEntries.forEach((entry)->{
+           Movie old = FileStorageUtil.getObject(entry.getMovie().getId(), FileStorageUtil.StorageType.MOVIES);
+           old.setQuantity(old.getQuantity()-1);
+           FileStorageUtil.saveObject(old.getId(), old, FileStorageUtil.StorageType.MOVIES);
+        });
+    }
+
+    public void increaseQuantity(){
+        checkoutEntries.forEach((entry)->{
+            Movie old =  FileStorageUtil.getObject(entry.getMovie().getId(), FileStorageUtil.StorageType.MOVIES);
+            old.setQuantity(old.getQuantity()+1);
+            FileStorageUtil.saveObject(old.getId(), old, FileStorageUtil.StorageType.MOVIES);
+        });
+
+    }
 }

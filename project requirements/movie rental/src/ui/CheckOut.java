@@ -1,8 +1,6 @@
 package ui;
 
-import business.Actor;
-import business.CheckoutRecord;
-import business.MemberUser;
+import business.*;
 import business.Movie;
 import dataaccess.FileStorageUtil;
 
@@ -24,7 +22,9 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,6 +42,8 @@ public class CheckOut {
     private JScrollPane scrollPaneCheckout;
     private JScrollPane scrollPaneMovie;
     private JScrollPane scrollPaneEntries;
+    private JTextField totalPrice = new JTextField("0.0");
+    private List<CheckoutEntry> checkoutRecord =  new ArrayList<>();
 
     /**
      * Launch the application.
@@ -68,7 +70,7 @@ public class CheckOut {
     public void add(){
         int r = tableMovie.getSelectedRow();
         if(r>=0) {
-
+            double total = Double.valueOf(totalPrice.getText());
             String id = modelMovie.getValueAt(r, 0).toString();
             String title = modelMovie.getValueAt(r, 1).toString();
             String quantity = modelMovie.getValueAt(r, 2).toString();
@@ -82,6 +84,11 @@ public class CheckOut {
             LocalDate dueDate = date.plusDays(7);
             String[] row = {id, title,price, date.toString(), dueDate.toString()};
             modelEntry.addRow(row);
+            total += Double.valueOf(price);
+            totalPrice.setText(String.format("%.2f",total));
+            Movie movie = FileStorageUtil.getObject(id, FileStorageUtil.StorageType.MOVIES);
+            CheckoutEntry entry = new CheckoutEntry(movie,date,dueDate);
+            checkoutRecord.add(entry);
         }
         else {
             JOptionPane.showMessageDialog(null, "Please select the Movie.");
@@ -89,23 +96,75 @@ public class CheckOut {
 
 
     }
+
+    public void initCheckoutRecord() {
+        emptyRecord();
+        List<CheckoutRecord> list = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.CHECKOUTRECORD);
+        for(CheckoutRecord record : list) {
+            if (record.getMember().equals(member)) {
+                String[] row = new String[6];
+                String row1 = "";
+                row[0] = record.getId();
+                for (CheckoutEntry entry : record.getCheckoutEntries()) {
+                    row1 += entry.getMovieTitle() + ",";
+                    row[2] = entry.getCheckoutDate().toString();
+                    row[3] = entry.getDueDate().toString();
+                }
+                row[1] = row1;
+                row[4] = String.valueOf(record.getPrice());
+                row[5] = record.isReturned ? "Yes" : "No";
+                modelCheckout.addRow(row);
+            }
+        }
+    }
+
+    private void emptyRecord() {
+        modelCheckout.setRowCount(0);
+    }
+    private void emptyEntires(){
+        modelEntry.setRowCount(0);
+    }
+    private void checkout(){
+        if(checkoutRecord.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select the Checkout Record.");
+            return;
+        }
+        CheckoutRecord c = new CheckoutRecord(FileStorageUtil.getId(FileStorageUtil.StorageType.CHECKOUTRECORD),member, checkoutRecord);
+        c.setPrice(Double.valueOf(totalPrice.getText()));
+        FileStorageUtil.saveObject(c.getId(),c,FileStorageUtil.StorageType.CHECKOUTRECORD);
+        c.decreaseQuantity();
+        totalPrice.setText("0.0");
+        initCheckoutRecord();
+        emptyEntires();
+
+    }
+
+    private void checkIn() {
+        int r = tableCheckout.getSelectedRow();
+        if(r>=0) {
+            String id = modelCheckout.getValueAt(r, 0).toString();
+            CheckoutRecord record =  FileStorageUtil.getObject(id, FileStorageUtil.StorageType.CHECKOUTRECORD);
+            if(record.isReturned) {
+                JOptionPane.showMessageDialog(null, "You are returned.");
+                return;
+            }
+            record.checking();
+            FileStorageUtil.saveObject(record.getId(),record,FileStorageUtil.StorageType.CHECKOUTRECORD);
+            initCheckoutRecord();
+            JOptionPane.showMessageDialog(null, "Successfully");
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select the Movie.");
+        }
+    }
+
     public CheckOut() {
         initialize();
     }
 
     public CheckOut(String memberId) {
-        MemberUser mu = (MemberUser) FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
+        MemberUser mu = FileStorageUtil.getObject(memberId, FileStorageUtil.StorageType.MEMBERS);
         this.member = mu;
-
-//        List<CheckoutRecord> crlist = FileStorageUtil.listAllObjects(FileStorageUtil.StorageType.CHECKOUTRECORD);
-//        Optional<CheckoutRecord> cr = crlist.stream().filter(x->x.getMember() == mu).findAny();
-//        if (cr.isPresent()) {
-//            record = cr.get();
-//        } else {
-//            CheckoutRecord newCr = new CheckoutRecord(mu);
-//            record = newCr;
-//        }
-
         initialize();
     }
 
@@ -150,22 +209,13 @@ public class CheckOut {
 
         tableCheckout = new JTable();
         tableCheckout.setDefaultEditor(Object.class, null);
-        tableCheckout.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int r = tableCheckout.getSelectedRow();
-//                idtf.setText(model.getValueAt(r, 0).toString());
-//                firstnametf.setText(model.getValueAt(r, 1).toString());
-//                lastnametf.setText(model.getValueAt(r, 2).toString());
 
-            }
-        });
         tableCheckout.setBackground(new Color(255, 240, 245));
         modelCheckout = new DefaultTableModel();
-        String[] column = {"Movie", "Checkout Date", "Due Date", "Total Amount"};
-        String[] row = new String[4];
+        String[] column = {"ID", "Movies", "Checkout Date", "Due Date", "Total Price", "Is returned"};
         modelCheckout.setColumnIdentifiers(column);
         tableCheckout.setModel(modelCheckout);
+        initCheckoutRecord();
         scrollPaneCheckout.setViewportView(tableCheckout);
 
         if (member != null) {
@@ -221,35 +271,16 @@ public class CheckOut {
         JButton btnadd = new JButton("Checkout");
         btnadd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int r = tableMovie.getSelectedRow();
-                if(r>=0 && member != null) {
-                    String id = modelMovie.getValueAt(r, 0).toString();
-                    Movie movie = FileStorageUtil.getObject(id, FileStorageUtil.StorageType.MOVIES);
-//
-//                    bframe.setVisible(false);
-//                    CheckOut checkoutWindow = new CheckOut(id);
-//                    checkoutWindow.bframe.setVisible(true);
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "Please select the Movie.");
-                }
+                checkout();
             }
         });
         btnadd.setBounds(6, 15, 117, 29);
         panel.add(btnadd);
 
-        JButton btndel = new JButton("Delete");
+        JButton btndel = new JButton("Checkin");
         btndel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int r = tableCheckout.getSelectedRow();
-                if(r>=0) {
-                    modelCheckout.removeRow(r);
-                    JOptionPane.showMessageDialog(null, "Deleted Successfully");
-
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "Please select a row");
-                }
+             checkIn();
             }
         });
         btndel.setBounds(156, 15, 117, 29);
@@ -301,5 +332,8 @@ public class CheckOut {
         });
         btnAdd.setBounds(450, 360, 161, 26);
         panel.add(btnAdd);
+
+        totalPrice.setBounds(650, 360, 50, 26);
+        panel.add(totalPrice);
     }
 }

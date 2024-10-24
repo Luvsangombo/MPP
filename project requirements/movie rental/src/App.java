@@ -19,6 +19,7 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws Exception {
        FileStorageUtil.deleteAll(FileStorageUtil.StorageType.MOVIES);
+        FileStorageUtil.deleteAll(FileStorageUtil.StorageType.CHECKOUTRECORD);
         // Create an Administrator object
         Administrator admin1 = new Administrator("Hossam", "Hassan", 1234);
         Administrator admin2 = new Administrator("od", "ch", 1234);

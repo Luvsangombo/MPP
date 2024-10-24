@@ -20,6 +20,16 @@ public class MemberUser implements Serializable {
         this.createdBy = createdBy;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj==null) return false;
+        if(!(obj instanceof MemberUser)) return false;
+
+        MemberUser other = (MemberUser) obj;
+
+        return firstName.equals(other.getFirstName()) && lastName.equals(other.getLastName()) && id==other.getId();
+    }
+
     public void requestMovie(Movie movie) {
         // Logic to request a movie
     }

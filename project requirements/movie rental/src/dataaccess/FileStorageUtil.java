@@ -41,7 +41,6 @@ public class FileStorageUtil {
             e.printStackTrace();
         }
     }
-
     @SuppressWarnings("unchecked")
     public static <T> HashMap<String, T> loadMap(StorageType type) {
         HashMap<String, T> map = new HashMap<>();
@@ -90,6 +89,8 @@ public class FileStorageUtil {
         for(Map.Entry<String, T> entry : map.entrySet()) {
             key = entry.getKey();
         }
+
+        if(key.isEmpty()) return "0";
         return String.valueOf(Integer.parseInt(key) + 1);
     }
 
