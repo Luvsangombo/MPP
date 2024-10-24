@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Movie {
 
@@ -66,7 +67,19 @@ public class Movie {
                 ||quantitytf.getText().equals("")
                 ||actorstf.getText().equals("")||directorstf.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill all the fields");
+            return null;
         }
+        Pattern pattern = Pattern.compile("[0-9]+");
+        if(!pattern.matcher(quantitytf.getText()).matches()){
+            JOptionPane.showMessageDialog(null, "Please enter a valid quantity");
+            return null;
+        }
+
+        try{ Double.parseDouble(pricetf.getText());}
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid price");
+            return null;
+        };
         String title = titletf.getText();
         String format = formattf.getText();
         String genre = genretf.getText();
@@ -98,6 +111,9 @@ public class Movie {
 
     private void addMovie() {
         business.Movie newMovie = getMovie();
+        if(newMovie == null) {
+            return;
+        }
         FileStorageUtil.saveObject(newMovie.getId(),newMovie, FileStorageUtil.StorageType.MOVIES);
         JOptionPane.showMessageDialog(null, "Added Successfully");
         setModelEmpty();

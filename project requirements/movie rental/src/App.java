@@ -163,12 +163,12 @@ public class App {
                 // Create a MemberUser object
 
         // Create MemberUser objects
-        MemberUser user1 = new MemberUser(1, "John", "Doe", "123.432.1234", "123 Main St", admin1);
-        MemberUser user2 = new MemberUser(2, "Jane", "Smith", "123.432.1234", "456 Elm St", admin1);
-        MemberUser user3 = new MemberUser(3, "Michael", "Johnson", "123.432.1234", "789 Oak St", admin1);
-        MemberUser user4 = new MemberUser(4, "Emily", "Davis", "123.432.1234", "101 Maple St", admin1);
-        MemberUser user5 = new MemberUser(5, "Chris", "Brown", "123.432.1234", "102 Pine St", admin1);
-        MemberUser user6 = new MemberUser(6, "Sarah", "Wilson", "123.432.1234", "103 Cedar St", admin1);
+        MemberUser user1 = new MemberUser(1, "John", "Doe", "1234321234", "123 Main St", admin1);
+        MemberUser user2 = new MemberUser(2, "Jane", "Smith", "1234321234", "456 Elm St", admin1);
+        MemberUser user3 = new MemberUser(3, "Michael", "Johnson", "1234321234", "789 Oak St", admin1);
+        MemberUser user4 = new MemberUser(4, "Emily", "Davis", "1234321234", "101 Maple St", admin1);
+        MemberUser user5 = new MemberUser(5, "Chris", "Brown", "1234321234", "102 Pine St", admin1);
+        MemberUser user6 = new MemberUser(6, "Sarah", "Wilson", "1234321234", "103 Cedar St", admin1);
 
         // Save the MemberUser objects to a file
         FileStorageUtil.saveObject("1", user1, FileStorageUtil.StorageType.MEMBERS);
