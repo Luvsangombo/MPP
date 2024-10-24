@@ -57,7 +57,7 @@ public class MainWindow {
                 Member bWindow = new Member();
                 //bframe is a variable property given in design view
                 bWindow.bframe.setVisible(true);
-
+                bWindow.bframe.setTitle("Members");
                 mframe.dispose();
             }
         });
@@ -70,7 +70,7 @@ public class MainWindow {
                 Movie bWindow = new Movie();
                 //bframe is a variable property given in design view
                 bWindow.bframe.setVisible(true);
-
+                bWindow.bframe.setTitle("Movies");
                 mframe.dispose();
             }
         });

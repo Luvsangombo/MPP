@@ -285,6 +285,7 @@ public class Member {
 
                     bframe.setVisible(false);
                     CheckOut checkoutWindow = new CheckOut(id);
+                    checkoutWindow.bframe.setTitle("Checkout window");
                     checkoutWindow.bframe.setVisible(true);
                 }
                 else {

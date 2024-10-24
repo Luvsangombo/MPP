@@ -8,8 +8,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -22,7 +20,6 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +53,6 @@ public class CheckOut {
                     window.bframe.setVisible(true);
                     window.bframe.setTitle("Check Out Window");
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -76,6 +72,7 @@ public class CheckOut {
             String quantity = modelMovie.getValueAt(r, 2).toString();
             if(Integer.valueOf(quantity) == 0 ){
                 JOptionPane.showMessageDialog(bframe, "Not available");
+                return;
             }
             String newQuantity = String.valueOf(Integer.valueOf(quantity)-1);
             modelMovie.setValueAt(newQuantity,r,2);
@@ -145,7 +142,7 @@ public class CheckOut {
             String id = modelCheckout.getValueAt(r, 0).toString();
             CheckoutRecord record =  FileStorageUtil.getObject(id, FileStorageUtil.StorageType.CHECKOUTRECORD);
             if(record.isReturned) {
-                JOptionPane.showMessageDialog(null, "You are returned.");
+                JOptionPane.showMessageDialog(null, "Book is returned.");
                 return;
             }
             record.checking();
